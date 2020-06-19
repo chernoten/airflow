@@ -17,7 +17,7 @@ def get_cdr():
     ftp.cwd('VIDAST')
     ls = ftp.retrlines('LIST ' + 'CF*', get_cdr_name)
     #print(f'last_cdr is {last_cdr}'
-    server_time =  datetime.now().strftime("%d-%m-%Y_%I-%M-%S")
+    server_time =  datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
     local_cdr = open("dags/radio-sorm/data/SKPTUS/in/{}_".format(server_time) + last_cdr, 'wb')
     ftp.retrbinary('RETR ' + last_cdr, local_cdr.write)
     ftp.quit()
@@ -41,7 +41,7 @@ get_operator = PythonOperator(task_id='get_CDR', python_callable=get_cdr, dag=da
 
 parser_operator =  BashOperator(
         task_id= 'parser_task',
-        bash_command='python ~/dags/radio-sorm/sorm/main.py --ptus=SK ~/{{ task_instance.xcom_pull(task_ids="get_CDR") }}',
+        bash_command='python3 ~/dags/radio-sorm/sorm/main.py --ptus=SK ~/{{ task_instance.xcom_pull(task_ids="get_CDR") }}',
         dag=dag
 )
 
