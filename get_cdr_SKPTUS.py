@@ -18,7 +18,7 @@ def get_cdr():
     ls = ftp.retrlines('LIST ' + 'CF*', get_cdr_name)
     #print(f'last_cdr is {last_cdr}'
     server_time =  datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-    local_cdr = open("dags/radio-sorm/data/SKPTUS/in/{}_".format(server_time) + last_cdr, 'wb')
+    local_cdr = open("dags/radio-sorm/data/skptus/in/{}_".format(server_time) + last_cdr, 'wb')
     ftp.retrbinary('RETR ' + last_cdr, local_cdr.write)
     ftp.quit()
     return local_cdr.name
